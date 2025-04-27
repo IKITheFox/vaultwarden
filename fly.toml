@@ -4,7 +4,7 @@ kill_timeout = "5s"
 primary_region = "hkg"
 
 [build]
-image = "ghcr.io/webees/vaultwarden"
+image = "ghcr.io/ikithefox/vaultwarden"
 
 [checks.health]
 grace_period = "30s"
