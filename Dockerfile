@@ -6,10 +6,8 @@ ARG SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.
     OVERMIND_URL=https://github.com/DarthSim/overmind/releases/download/v2.4.0/overmind-v2.4.0-linux-amd64.gz
 
 ENV TZ="Asia/Shanghai" \
-    #
     OVERMIND_CAN_DIE=crontab \
     OVERMIND_PROCFILE=/Procfile \
-    #
     ROCKET_PORT=8080
 
 COPY config/crontab \
@@ -27,21 +25,22 @@ RUN apk add --no-cache \
         tzdata \
         iptables \
         ip6tables \
-        iputils-ping \
+        iputils \
         tmux \
         sqlite \
         msmtp \
-        mailx \
-        #
-        && rm -rf /var/cache/apk/* \
-        && curl -fsSL "$SUPERCRONIC_URL" -o /usr/local/bin/supercronic \
-        && curl -fsSL "$OVERMIND_URL" | gunzip -c - > /usr/local/bin/overmind \
-        #
-        && ln -sf /usr/bin/msmtp /usr/bin/sendmail \
-        && ln -sf /usr/bin/msmtp /usr/sbin/sendmail \
-        #
-        && chmod +x /usr/local/bin/supercronic \
-        && chmod +x /usr/local/bin/overmind \
-        && chmod +x /restic.sh
+        s-nail \
+        gzip \
+    && rm -rf /var/cache/apk/* \
+    \
+    && curl -fsSL "$SUPERCRONIC_URL" -o /usr/local/bin/supercronic \
+    && curl -fsSL "$OVERMIND_URL" | gzip -dc > /usr/local/bin/overmind \
+    \
+    && ln -sf /usr/bin/msmtp /usr/bin/sendmail \
+    && ln -sf /usr/bin/msmtp /usr/sbin/sendmail \
+    \
+    && chmod +x /usr/local/bin/supercronic \
+    && chmod +x /usr/local/bin/overmind \
+    && chmod +x /restic.sh
 
 CMD ["overmind", "start"]
