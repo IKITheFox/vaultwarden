@@ -1,4 +1,4 @@
-FROM vaultwarden/server:testing-alpine
+FROM vaultwarden/server:1.34.3-alpine
 
 WORKDIR /
 
